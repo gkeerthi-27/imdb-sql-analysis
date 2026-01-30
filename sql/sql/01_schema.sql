@@ -32,3 +32,12 @@ primary key (movie_id,genre_id),
 foreign key(movie_id) references movies(movie_id),
 foreign key (genre_id)references genres(genre_id)
 );
+---Rating tabel---
+create table ratings (
+movie_id int,
+imdb_rating decimal(3,1),
+votes int,
+primary key (movie_id),
+foreign key (movie_id) REFERENCES movies(movie_id)
+);
+
