@@ -71,3 +71,19 @@ Working with messy raw data
 Designing normalized relational schemas
 Writing analytical SQL queries
 Debugging SQL errors professionally
+
+## How to Run This Project
+1. Import the IMDb CSV file into MySQL as `movies_raw`
+2. Run `sql/01_schema.sql`
+3. Run `sql/02_data_cleaning.sql`
+4. Run `sql/03_validation_queries.sql`
+5. Run `sql/04_analysis_queries.sql`
+
+## Project Highlights
+- Designed a normalized relational database (1NF–3NF)
+- Handled many-to-many relationships using junction tables
+- Cleaned and transformed real-world messy CSV data
+- Used window functions for ranking analysis
+- Validated data integrity using analytical checks
+
+
