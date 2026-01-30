@@ -1,58 +1,44 @@
--- Raw data imported from movies.csv as table `movies_raw`--
-insert into movies(title,release_year,runtime,director)
+-- Clean runtime column(text-integer)--
+insert into movies(title, release_year, runtime, director)
 select distinct
-series_title,
-released_year,
+Series_Title,
+Released_Year,
 cast(replace(runtime,'min','') as unsigned),
-director
-from `movies.csv`;
+Director
+from`movies.csv`;
 -- Fix UTF-8 encoding issues in actor names--
-select 
-actor_name,
-convert(
-binary convert(actor_name using latin1)
-using utf8mb4
-)as fixed_name
-from actors ;
 update actors
-set actor_name=
+set actor_name =
 convert(
 cast(actor_name as binary)
 using utf8mb4
 )
-where actor_id in(
+where actor_id in (
 select actor_id
-from(
-select actor_id
+from (select actor_id
 from actors
-where actor_name like '%a%'
-)t
+where actor_name like '%Ã%'
+) t
 );
-select actor_name
-from actors
-where actor_name like '%a%'; 
-
-
--- Insert movies--
-
-insert into movies(title,release_year,runtime,director)
-select distinct
-series_title,
-released_year,
-cast(replace(runtime,'min','') as unsigned),
-director
-from `movies.csv`;
-
--- Insert unique actors--
-
+--insert rating into rating tabel--
+insert into ratings (movie_id, imdb_rating, votes)
+select
+m.movie_id,
+r.IMDB_Rating,
+cast(replace(r.No_of_Votes, ',', '') as unsigned)
+from `movies.csv` r
+join movies m
+on r.Series_Title = m.title;
+--Normalize actors--
 insert into actors(actor_name)
-select distinct star1 from`movies.csv`
+select distinct star1 from `movies.csv`
 union
 select distinct star2 from `movies.csv`
 union
 select distinct star3 from `movies.csv`
 union
 select distinct star4 from `movies.csv`;
+select * from actors
 
 -- Map movies to actors--
 insert ignore into movie_actors (movie_id, actor_id)
